@@ -55,14 +55,6 @@ body::before {
     z-index: 1;
 }
 
-/* ══════════════════════════════════════════════
-   GRADUAL BLUR BOTTOM — copy-paste persis dari
-   index.html / style.css:
-   body::after  = dark gradient overlay
-   .blur-bottom = backdrop-filter blur layer
-   z-index 999  = di atas konten (z-index 2)
-                  tapi di bawah footer (z-index 1001)
-══════════════════════════════════════════════ */
 body::after {
     content: '';
     position: fixed;
@@ -390,7 +382,7 @@ body::after {
 
 .page-header h1 {
     font-family: 'Anton', sans-serif;
-    font-size: 100px;
+    font-size: clamp(40px, 10vw, 100px);
     line-height: 1;
     letter-spacing: 2px;
     text-shadow: 0 4px 40px rgba(139, 0, 0, .7);
@@ -407,7 +399,7 @@ body::after {
     position: relative;
     z-index: 2;
     display: grid;
-    grid-template-columns: 240px 1fr;
+    grid-template-columns: 220px 1fr;
     gap: 0;
     max-width: 1280px;
     margin: 0 auto;
@@ -485,7 +477,7 @@ body::after {
 
 /* ── PROJECT LIST ── */
 .project-list {
-    padding-left: 60px;
+    padding-left: 48px;
     display: flex;
     flex-direction: column;
     gap: 28px;
@@ -517,10 +509,12 @@ body::after {
     border-color: rgba(255, 102, 102, .35);
 }
 
+/* ── CARD IMAGE ── */
 .card-img-wrap {
     position: relative;
     overflow: hidden;
     border-right: 1px solid rgba(139, 0, 0, .15);
+    min-height: 260px;
 }
 
 .card-img-wrap img {
@@ -533,7 +527,7 @@ body::after {
 }
 
 .project-card:hover .card-img-wrap img {
-    transform: scale(1.1);
+    transform: scale(1.08);
 }
 
 .card-img-wrap::after {
@@ -552,27 +546,43 @@ body::after {
 .card-img-placeholder {
     width: 100%;
     height: 100%;
+    min-height: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
     background: rgba(30, 0, 0, .4);
 }
 
+/* img inside placeholder should fill correctly */
+.card-img-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform .6s cubic-bezier(.25, .46, .45, .94);
+}
+
+.project-card:hover .card-img-placeholder img {
+    transform: scale(1.08);
+}
+
 .card-img-placeholder svg {
     opacity: .2;
 }
 
+/* ── CARD BODY ── */
 .card-body {
-    padding: 2.5rem 2.8rem;
+    padding: 2rem 2.4rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1rem;
+    gap: .85rem;
 }
 
 .card-number {
     font-family: 'Anton', sans-serif;
-    font-size: 4rem;
+    font-size: 3.5rem;
     line-height: 1;
     color: rgba(139, 0, 0, .2);
     letter-spacing: 2px;
@@ -594,7 +604,7 @@ body::after {
 
 .card-title {
     font-family: 'Segoe UI', sans-serif;
-    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
     font-weight: 700;
     color: #fff;
     line-height: 1.3;
@@ -602,7 +612,7 @@ body::after {
 }
 
 .card-desc {
-    font-size: .88rem;
+    font-size: .85rem;
     color: rgba(210, 185, 185, .6);
     line-height: 1.7;
     font-family: 'Segoe UI', sans-serif;
@@ -612,7 +622,7 @@ body::after {
     display: flex;
     flex-wrap: wrap;
     gap: 6px;
-    margin-top: .5rem;
+    margin-top: .4rem;
 }
 
 .chip {
@@ -642,7 +652,7 @@ body::after {
     text-transform: uppercase;
     color: rgba(255, 170, 170, .5);
     text-decoration: none;
-    margin-top: .5rem;
+    margin-top: .4rem;
     transition: all .25s ease;
     font-family: 'Segoe UI', sans-serif;
     align-self: flex-start;
@@ -687,13 +697,7 @@ body::after {
     margin-top: 14px;
 }
 
-/* ══════════════════════════════════════════════
-   SITE FOOTER
-   Persis sama dengan .site-footer di style.css
-   z-index 1001 = lebih tinggi dari blur (999)
-   sehingga footer selalu terlihat jelas,
-   sementara blur menutupi konten di atasnya
-══════════════════════════════════════════════ */
+/* ── FOOTER ── */
 .site-footer {
     display: flex;
     align-items: center;
@@ -738,46 +742,105 @@ body::after {
     transform: translateY(-2px);
 }
 
-/* ── RESPONSIVE ── */
-@media (max-width: 960px) {
-    .projects-layout {
-        grid-template-columns: 1fr;
-        padding: 40px 20px 80px;
+/* ══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════════ */
+
+/* ── Large tablet: shrink image column ── */
+@media (max-width: 1100px) {
+    .project-card {
+        grid-template-columns: 220px 1fr;
+        min-height: 180px;
     }
 
+    .card-img-wrap,
+    .card-img-placeholder {
+        min-height: 160px;
+    }
+
+    .card-body {
+        padding: 1.4rem 1.8rem;
+    }
+
+    .card-number {
+        font-size: 2.8rem;
+    }
+}
+
+/* ── Medium: hide sidebar, stack cards fully ── */
+@media (max-width: 900px) {
+    .projects-layout {
+        grid-template-columns: 1fr;
+        padding: 32px 20px 100px;
+        gap: 0;
+    }
+
+    /* Sidebar becomes horizontal pill nav */
     .project-nav {
         position: static;
         border-right: none;
-        border-bottom: 1px solid rgba(139, 0, 0, .15);
-        padding: 0 0 24px;
-        margin-bottom: 40px;
+        border-bottom: 1px solid rgba(139, 0, 0, .18);
+        padding: 0 0 20px;
+        margin-bottom: 36px;
         display: flex;
         flex-wrap: wrap;
-        gap: 10px;
+        gap: 8px 10px;
         align-items: center;
     }
 
     .project-nav-label {
         width: 100%;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
     }
 
     .nav-item {
         margin-bottom: 0;
+        background: rgba(20, 0, 0, .4);
+        border: 1px solid rgba(139, 0, 0, .2);
+        border-radius: 50px;
+        padding: 5px 14px 5px 10px;
+        gap: 8px;
+    }
+
+    .nav-item.active {
+        border-color: rgba(255, 68, 68, .45);
+        background: rgba(139, 0, 0, .18);
+    }
+
+    .nav-item-text {
+        font-size: .6rem;
     }
 
     .project-list {
         padding-left: 0;
+        gap: 20px;
     }
 
+    /* Cards go full-width, image on top */
     .project-card {
         grid-template-columns: 1fr;
+        min-height: unset;
     }
 
     .card-img-wrap {
-        min-height: 220px;
+        min-height: 160px;
+        max-height: 180px;
         border-right: none;
         border-bottom: 1px solid rgba(139, 0, 0, .15);
+    }
+
+    .card-img-placeholder {
+        min-height: 160px;
+        max-height: 180px;
+    }
+
+    .card-body {
+        padding: 1.2rem 1.4rem;
+        gap: .6rem;
+    }
+
+    .card-number {
+        font-size: 2.2rem;
     }
 
     .back-btn {
@@ -787,11 +850,100 @@ body::after {
         padding: 7px 14px;
     }
 
-    .page-header h1 {
-        font-size: 60px;
-    }
+    .side-line { display: none; }
 
     .site-footer {
         padding: 0.8rem 20px;
+    }
+}
+
+/* ── Small mobile ── */
+@media (max-width: 520px) {
+    .page-header {
+        padding: 70px 20px 16px;
+    }
+
+    .page-header h1 {
+        font-size: clamp(36px, 13vw, 56px);
+        letter-spacing: 1px;
+    }
+
+    .projects-layout {
+        padding: 24px 14px 100px;
+    }
+
+    /* Collapse nav into 2-column grid */
+    .project-nav {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        padding-bottom: 18px;
+        margin-bottom: 24px;
+    }
+
+    .project-nav-label {
+        grid-column: 1 / -1;
+    }
+
+    .nav-item {
+        border-radius: 8px;
+        padding: 6px 10px;
+        justify-content: flex-start;
+    }
+
+    .nav-item-text {
+        font-size: .56rem;
+        letter-spacing: .06em;
+    }
+
+    .project-list {
+        gap: 16px;
+    }
+
+    .card-img-wrap,
+    .card-img-placeholder {
+        min-height: 130px;
+        max-height: 150px;
+    }
+
+    .card-body {
+        padding: 1.2rem 1.2rem;
+        gap: .6rem;
+    }
+
+    .card-number {
+        font-size: 2.2rem;
+    }
+
+    .card-title {
+        font-size: 1rem;
+    }
+
+    .card-desc {
+        font-size: .8rem;
+        line-height: 1.6;
+    }
+
+    .chip {
+        font-size: .52rem;
+        padding: 3px 10px;
+    }
+
+    .card-link {
+        font-size: .62rem;
+    }
+
+    .back-btn {
+        top: 48px;
+        left: 14px;
+        font-size: .55rem;
+        padding: 6px 12px;
+    }
+
+    .site-footer {
+        flex-direction: column;
+        gap: .6rem;
+        text-align: center;
+        padding: 1rem 14px;
     }
 }
