@@ -1010,28 +1010,11 @@ section p {
 }
 
 .featured-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
     gap: 28px;
     position: relative;
-}
-
-.featured-grid::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 1px;
-    height: 100%;
-    background: linear-gradient(to bottom,
-            transparent 0%,
-            rgba(139, 0, 0, 0.3) 15%,
-            rgba(255, 80, 80, 0.2) 50%,
-            rgba(139, 0, 0, 0.3) 85%,
-            transparent 100%);
-    pointer-events: none;
-    z-index: 0;
 }
 
 .featured-card {
@@ -1045,6 +1028,9 @@ section p {
     flex-direction: column;
     position: relative;
     z-index: 1;
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto;
     transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
@@ -1070,13 +1056,14 @@ section p {
 
 .featured-card-top {
     padding: 1.8rem 2rem 1.2rem;
+    text-align: center;
 }
 
 .featured-dash {
     width: 28px;
     height: 2px;
     background: rgba(200, 0, 0, 0.4);
-    margin-bottom: 1rem;
+    margin: 0 auto 1rem;
 }
 
 .featured-year {
@@ -1115,6 +1102,7 @@ section p {
 .featured-tags {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 6px;
     padding: 0 2rem 1.2rem;
 }
@@ -1156,9 +1144,17 @@ section p {
     overflow: hidden;
 }
 
-.featured-visual-inner svg {
+.featured-visual-img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.featured-card:hover .featured-visual-img {
+    transform: scale(1.06);
 }
 
 .featured-card-footer {
@@ -1798,12 +1794,8 @@ section p {
     }
 
     .featured-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 24px;
-    }
-
-    .featured-grid::before {
-        display: none;
     }
 
     .featured-title {
@@ -1985,12 +1977,8 @@ section p {
     }
 
     .featured-grid {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         gap: 20px;
-    }
-
-    .featured-grid::before {
-        display: none;
     }
 
     .featured-title {
